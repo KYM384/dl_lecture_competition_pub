@@ -116,7 +116,7 @@ def run(args: DictConfig):
     model.eval()
     for X, subject_idxs in tqdm(test_loader, desc="Validation"):      
         with torch.no_grad():
-            X = wavelet(X.unsqueeze(2)).detach()
+            X = wavelet(X.to(args.device).unsqueeze(2)).detach()
             preds.append(model(X).detach().cpu())
 
     preds = torch.cat(preds, dim=0).numpy()

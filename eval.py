@@ -10,7 +10,7 @@ from termcolor import cprint
 from tqdm import tqdm
 
 from src.datasets import ThingsMEGDataset
-from src.models import BasicConvClassifier
+from src.models import BasicConvClassifier, Wavelet
 from src.utils import set_seed
 
 
@@ -36,14 +36,17 @@ def run(args: DictConfig):
     ).to(args.device)
     model.load_state_dict(torch.load(args.model_path, map_location=args.device))
 
+    wavelet = Wavelet().to(args.device)
+
     # ------------------
     #  Start evaluation
     # ------------------ 
     preds = [] 
     model.eval()
-    for X, subject_idxs in tqdm(test_loader, desc="Validation"):        
-        preds.append(model(X.to(args.device)).detach().cpu())
-        
+    for X, subject_idxs in tqdm(test_loader, desc="Validation"):    
+        X = wavelet(X.to(args.device).unsqueeze(2)).detach()
+        preds.append(model(X).detach().cpu())
+
     preds = torch.cat(preds, dim=0).numpy()
     np.save(os.path.join(savedir, "submission"), preds)
     cprint(f"Submission {preds.shape} saved at {savedir}", "cyan")

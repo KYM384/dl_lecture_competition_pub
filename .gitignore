@@ -6,6 +6,8 @@ preprocess.py
 eval_omnicampus.py
 .github/
 
+*.zip
+
 # -------------------
 #   Python template
 # -------------------
