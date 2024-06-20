@@ -1,6 +1,6 @@
-batch_size: 128
-epochs: 80
-lr: 0.001
+batch_size: 512
+epochs: 40
+lr: 0.002
 
 device: cuda:0
 num_workers: 4
@@ -8,7 +8,7 @@ seed: 1234
 use_wandb: True
 
 data_dir: data
-out_dir: /content/drive/MyDrive/DL/wavelet
+out_dir: /content/drive/MyDrive/Colab Notebooks/DLBasics2024_colab/final/wavelet
 
 # Evaluation
 model_path: 

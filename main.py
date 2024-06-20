@@ -26,7 +26,7 @@ def run(args: DictConfig):
     # ------------------
     #    Dataloader
     # ------------------
-    loader_args = {"batch_size": args.batch_size, "num_workers": args.num_workers}
+    loader_args = {"batch_size": args.batch_size, "num_workers": args.num_workers, "pin_memory": True}
 
     train_set = ThingsMEGDataset("train", args.data_dir)
     train_loader = torch.utils.data.DataLoader(train_set, shuffle=True, **loader_args)
@@ -106,7 +106,6 @@ def run(args: DictConfig):
             torch.save(model.state_dict(), os.path.join(logdir, "model_best.pt"))
             max_val_acc = np.mean(val_acc)
 
-
     # ----------------------------------
     #  Start evaluation with best model
     # ----------------------------------
@@ -125,4 +124,6 @@ def run(args: DictConfig):
 
 
 if __name__ == "__main__":
+    torch.autograd.set_detect_anomaly(True)
+
     run()
